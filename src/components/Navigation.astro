@@ -1,0 +1,44 @@
+---
+const path = Astro.url.pathname;
+---
+
+<nav>
+    <ul class="navlist">
+        <li class={path == "/" ? "active navitem" : "navitem"}><a href="/" class="navlink">Home</a></li>
+        <li class={path == "/studio" ? "active navitem" : "navitem"}><a href="/studio" class="navlink">Studio Procedures & Pricing</a></li>
+        <li class={path == "/performances" ? "active navitem" : "navitem"}><a href="/performances" class="navlink">Upcoming Performances</a></li>
+        <li class={path == "/video" ? "active navitem" : "navitem"}><a href="/video" class="navlink">Video Gallery</a></li>
+        <li class={path == "/sacredchoir" ? "active navitem" : "navitem"}><a href="/sacredchoir" class="navlink">Sacred Choir</a></li>
+        <li class={path == "/contact" ? "active navitem" : "navitem"}><a href="/contact" class="navlink">Contact</a></li>
+    </ul>
+</nav>
+
+<style>
+    .navlist {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .5em 1em;
+        justify-content: center;
+    }
+    .navlink {
+        font-weight: 600;
+        text-decoration: none;
+        color: var(--white);
+        display: block;
+        padding: .5em 1em;
+        transition: color 1s ease;
+    }
+    .navlink:hover {
+        color: var(--links);
+    }
+    .navitem {
+        border-bottom: 3px solid #00000000;
+        transition: border 1s ease;
+    }
+    .navitem:hover {
+        border-bottom: 3px solid var(--links);
+    }
+    .active {
+        border-bottom: 3px solid var(--white);
+    }
+</style>

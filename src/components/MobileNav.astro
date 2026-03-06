@@ -1,0 +1,131 @@
+---
+const path = Astro.url.pathname;
+---
+<label class="hamburger-menu">
+    <input type="checkbox">
+</label>
+
+<aside class="sidebar">
+    <nav>
+        <ul class="navlist">
+            <li class={path == "/" ? "active navitem" : "navitem"}><a href="/" class="navlink">Home</a></li>
+            <li class={path == "/studio" ? "active navitem" : "navitem"}><a href="/studio" class="navlink">Studio Procedures & Pricing</a></li>
+            <li class={path == "/performances" ? "active navitem" : "navitem"}><a href="/performances" class="navlink">Upcoming Performances</a></li>
+            <li class={path == "/video" ? "active navitem" : "navitem"}><a href="/video" class="navlink">Video Gallery</a></li>
+            <li class={path == "/sacredchoir" ? "active navitem" : "navitem"}><a href="/sacredchoir" class="navlink">Sacred Choir</a></li>
+            <li class={path == "/contact" ? "active navitem" : "navitem"}><a href="/contact" class="navlink">Contact</a></li>
+        </ul>
+    </nav>
+</aside>
+
+<style>
+    *, *::after, *::before { box-sizing: border-box; }
+
+    :root {
+        --bar-width: 50px;
+        --bar-height: 4px;
+        --hamburger-gap: 10px;
+        --foreground: var(--white);
+        --background: var(--primary);
+        --hamburger-margin: 20px;
+        --animation-timing: 200ms ease-in-out;
+        --hamburger-height: calc(var(--bar-height)*3 + var(--hamburger-gap)*2);
+    }
+    .hamburger-menu {
+        --x-width: calc(var(--hamburger-height) * 1.41421356237);
+        display: flex;
+        flex-direction: column;
+        gap: var(--hamburger-gap);
+        width: max-content;
+        position: absolute;
+        top: calc(var(--hamburger-margin)*1.5);
+        left: var(--hamburger-margin);
+        z-index: 2;
+        cursor: pointer;
+    }
+    .hamburger-menu:has(input:focus-visible)::before,
+    .hamburger-menu:has(input:focus-visible)::after,
+    .hamburger-menu input:focus-visible, {
+        border: 1px solid var(--background);
+        box-shadow: 0 0 0 1px var(--foreground);
+    }
+    .hamburger-menu::before,
+    .hamburger-menu::after,
+    .hamburger-menu input {
+        content: "";
+        width: var(--bar-width);
+        height: var(--bar-height);
+        background-color: var(--foreground);
+        border-radius: 100px;
+        transform-origin: left center;
+        transition: opacity var(--animation-timing), width var(--animation-timing), rotate var(--animation-timing), translate var(--animation-timing);
+    }
+    .hamburger-menu input {
+        appearance: none;
+        padding: 0;
+        margin: 0;
+        outline: none;
+        pointer-events: none;
+    }
+
+    .hamburger-menu input:checked {
+        opacity: 0;
+        width: 0;
+    }
+    .hamburger-menu:has(input:checked)::before {
+        rotate: 45deg;
+        width: var(--x-width);
+        translate: 0 calc(var(--bar-height) / -2);
+    }
+    .hamburger-menu:has(input:checked)::after {
+        rotate: -45deg;
+        width: var(--x-width);
+        translate: 0 calc(var(--bar-height) / 2);
+    }
+
+    .sidebar {
+        position: absolute;
+        translate: -100%;
+        transition: translate var(--animation-timing);
+        background: var(--background);
+        color: var(--foreground);
+        width: fit-content;
+        min-height: 100vh;
+        padding: 0 5vw;
+        padding-top: calc(var(--hamburger-height) + var(--hamburger-margin) + 3em);
+        z-index: 1;
+    }
+    .hamburger-menu:has(input:checked) + .sidebar {
+        translate: 0;
+    }
+
+    .navlink {
+        font-weight: 600;
+        text-decoration: none;
+        color: var(--white);
+        display: block;
+        padding: .5em 1em;
+        transition: color 1s ease;
+    }
+    .navlink:hover {
+        color: var(--links);
+    }
+    .navitem {
+        border-bottom: 3px solid #00000000;
+        transition: border 1s ease;
+        width: fit-content;
+        margin-bottom: 2em;
+    }
+    .navitem:hover {
+        border-bottom: 3px solid var(--links);
+    }
+    .active {
+        border-bottom: 3px solid var(--white);
+    }
+</style>
+
+<style is:inline>
+    .titlelogo svg {
+        max-height: 150px;
+    }
+</style>

@@ -1,0 +1,105 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Button from "../components/Button.astro";
+
+import { PortableText } from "astro-portabletext";
+import { urlFor } from "../utils/image";
+
+import { getHome } from "../utils/sanity";
+const content = await getHome();
+
+const headImg = urlFor(content.headerImage).url();
+const hotspot: any = content.headerImage.hotspot ? content.headerImage.hotspot : false;
+const center = hotspot ? (hotspot.y * 100) + '%' : '';
+---
+
+<Layout title="Home" headerimg={headImg} HIcenter={center}>
+  <section class="firstsection">
+    <div class="firstimage">
+      <img
+        class="roundedcorners firstimg"
+        src={urlFor(content.firstImage).url()}
+        alt="Miss Deborah's Piano Studio" />
+    </div>
+    <div class="firstcontent">
+      <h2 class="firsttitle">{content.firsttitle}</h2>
+      <p class="firsttext">{content.firsttext}</p>
+      <Button text="Contact" link="/contact" />
+    </div>
+  </section>
+  <section class="aboutsection">
+    <h2 class="abouttitle">{content.abouttitle}</h2>
+    <div class="aboutcontent">
+      <div class="aboutcolumn col1"><PortableText value={content.column1} /></div>
+      <div class="aboutcolumn col2"><PortableText value={content.column2} /></div>
+    </div>
+    <div class="studiobutton">
+      <Button text="Studio Procedures & Pricing" link="/studio" />
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .firstsection {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 3em 0;
+  }
+  .firstimg {
+    width: 100%;
+  }
+  .firstimage {
+    width: 40%;
+  }
+  .firstcontent {
+    width: 50%;
+  }
+  .firsttitle {
+    line-height: 1.2em;
+  }
+  .firsttext {
+    margin: 1em 0 2em;
+  }
+  .aboutsection {
+    margin: 10em 0 15em;
+  }
+  .abouttitle {
+    text-align: center;
+    margin-bottom: 1em;
+  }
+  .aboutcontent {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .col1 {
+    width: 40%;
+  }
+  .col2 {
+    width: 50%;
+  }
+  .studiobutton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 4em;
+  }
+
+  @media (max-width: 800px) {
+    .firstimage, .firstcontent, .col1, .col2 {
+      width: 100%;
+    }
+  }
+</style>
+
+<style is:inline>
+  .aboutcolumn p {
+    margin-bottom: 1.5em;
+  }
+  .aboutcolumn ul {
+    margin-top: -1.5em;
+  }
+</style>

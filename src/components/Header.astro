@@ -1,0 +1,96 @@
+---
+import { Icon } from 'astro-icon/components';
+
+import Navigation from "./Navigation.astro";
+import MobileNav from "./MobileNav.astro";
+
+interface Props {
+  title: string;
+  headerimg?: string;
+  HIcenter?: string;
+}
+
+const { title, headerimg, HIcenter } = Astro.props;
+const path = Astro.url.pathname;
+import defaultImg from "../assets/bkgdphoto.jpg";
+
+const bkgdImg = headerimg ? headerimg : defaultImg.src;
+---
+<header class="overlay">
+  <div id="mobilenav"><MobileNav /></div>
+  <div class="header-container">
+
+    <div class="titlelogo"><Icon name="PPSlogo" /></div>
+
+    <div id="regularnav"><Navigation /></div>
+
+    {path == "/" ? <h1 class="hometitle pagetitle">Miss Deborah Cobb is a <b><i>Peabody trained pianist</i></b> offering private piano lessons for all ages and all levels of study</h1> : <h1 class="pagetitle">{title}</h1>}</h1>
+
+  </div>
+</header>
+
+<style define:vars={{ image: `url("${bkgdImg}")`, center: HIcenter ? 'center '+HIcenter : 'center' }}>
+  header {
+    background-image: var(--image);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: var(--center);
+  }
+  .overlay {
+    border-image-source: linear-gradient(var(--primary-overlay), var(--primary-overlay));
+    border-image-slice: fill 1;
+  }
+  .header-container {
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 2em 50px;
+  }
+  .titlelogo {
+    max-width: 400px;
+    height: auto;
+    margin: 0 auto;
+    margin-bottom: 1.5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .pagetitle {
+    text-align: center;
+    font-weight: 400;
+    font-size: 1.5em;
+    margin: 4em auto 1em;
+    max-width: 900px;
+  }
+  .hometitle {
+    margin-top: 6em;
+  }
+  @media (min-width: 800px) {
+    #mobilenav {
+      display: none;
+    }
+  }
+  @media (max-width: 800px) {
+    #regularnav {
+      display: none;
+    }
+    .titlelogo {
+        text-align: right;
+        width: 70%;
+        margin-left: 30%;
+        padding: 0;
+    }
+    .header-container {
+      max-width: 1500px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+  }
+</style>
+
+<style is:inline>
+  .titlelogo svg {
+    width: 100%;
+    height: auto;
+    fill: var(--white);
+  }
+</style>

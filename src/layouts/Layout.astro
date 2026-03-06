@@ -1,0 +1,134 @@
+---
+// https://docs.astro.build/en/guides/view-transitions/
+import { ViewTransitions } from 'astro:transitions';
+import Resets from '@julian_cataldo/astro-resets/Resets.astro';
+import { SEO } from "astro-seo";
+import { urlFor } from "../utils/image";
+
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import CTA from '../components/CTA.astro';
+
+interface Props {
+  title: string;
+  headerimg?: string;
+  HIcenter?: string;
+}
+
+const { title, headerimg, HIcenter } = Astro.props;
+
+import { getSEO } from "../utils/sanity";
+const content = await getSEO();
+const ogimageurl = urlFor(content.ogimage).url();
+
+const path = Astro.url.pathname;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator}  />
+
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+
+    <SEO
+      title=`Private Piano School | ${title}`
+      description={content.description}
+      openGraph={{
+        basic: {
+          title: `${content.title}`,
+          type: "website",
+          image: `${ogimageurl}`,
+        }
+      }}
+    />
+
+    <Resets
+      removeAllMargins={true}
+      fontSmoothing={true}
+      fontSystem={false}
+      scrollSmooth={true}
+      borderBox={true}
+      scrollBarKeep={true}
+    />
+
+    <title>Private Piano School | {title}</title>
+    <ViewTransitions />
+  </head>
+  <body>
+    {headerimg ? <Header title={title} headerimg={headerimg} HIcenter={HIcenter} /> : <Header title={title} />}
+    <main>
+      <slot />
+    </main>
+    {path == "/" ? <CTA /> : null}
+    <Footer />
+  </body>
+</html>
+
+<style>
+  main {
+    margin: 100px auto;
+    padding: 0 20px;
+    /* min-height: 100vh; */
+  }
+
+  @media (min-width: 800px) {
+    main {
+      max-width: 1500px;
+      padding: 0 50px;
+    }
+  }
+</style>
+
+<style is:global>
+  :root {
+    --white: #f7f7f7;
+    --black: #010B13;
+    --primary: #1c3144;
+    --primary-overlay: #1c3144bf;
+    --links: #add0ef;
+  }
+
+  html {
+    background-color: var(--black);
+    color: var(--white);
+    text-size-adjust: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: "Lora", serif;
+    font-size: 22px;
+    margin: 0;
+    padding: 0;
+  }
+  @media (max-width: 575px) {
+    body {
+      font-size: 18px;
+    }
+  }
+
+  a {
+    color: var(--links);
+  }
+  a:hover {
+    color: var(--white);
+  }
+  .roundedcorners {
+    border-radius: 10px;
+  }
+</style>

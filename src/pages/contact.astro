@@ -1,0 +1,63 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { urlFor } from "../utils/image";
+import { getContact } from "../utils/sanity";
+
+const content = await getContact();
+const headImg = urlFor(content.headerImage).url();
+const hotspot: any = content.headerImage.hotspot ? content.headerImage.hotspot : false;
+const center = hotspot ? (hotspot.y * 100) + '%' : '';
+---
+
+<Layout title="Contact" headerimg={headImg} HIcenter={center}>
+  <section class="contact">
+    <div class="image">
+      <img
+          class="roundedcorners"
+          src={urlFor(content.portrait).url()}
+          alt="Portrait of Miss Deborah" />
+    </div>
+    <div class="content">
+      <p class="text">{content.text}</p>
+      <a class="contactlink" href="tel:4108121991">410-812-1991</a>
+      <a class="contactlink" href="mailto:deolivera777@gmail.com">deolivera777@gmail.com</a>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .contact {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15em;
+    gap: 3em 0;
+  }
+  .image {
+    width: 30%;
+    margin: 0 auto;
+  }
+  .image img {
+    width: 100%;
+    height: auto;
+  }
+  .content {
+    width: 60%;
+  }
+  .contactlink {
+    display: block;
+    font-size: 2em;
+    margin-top: 1em;
+  }
+
+  @media (max-width: 800px) {
+    .image {
+      order: 2;
+      max-width: 400px;
+    }
+    .image, .content {
+      width: 100%;
+    }
+  }
+</style>

@@ -1,0 +1,27 @@
+---
+interface Props {
+  text: string;
+  link: string;
+  classname?: string;
+}
+
+const { text, link, classname } = Astro.props;
+---
+<a href={link} class={classname ? classname + " btn" : "btn"}>{text}</a>
+
+<style>
+    .btn {
+        display: inline-block;
+        text-decoration: none;
+        font-size: 1.2em;
+        font-weight: 600;
+        color: var(--white);
+        padding: .8em 1.2em;
+        border: 4px solid var(--white);
+        transition: color .7s ease, border-color .7s ease;
+    }
+    .btn:hover {
+        color: var(--links);
+        border-color: var(--links);
+    }
+</style>

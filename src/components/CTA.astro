@@ -1,0 +1,54 @@
+---
+import Button from "./Button.astro";
+
+import { urlFor } from "../utils/image";
+
+import { getHome } from "../utils/sanity";
+const content = await getHome();
+
+const bkgdImg = urlFor(content.ctaImage).url();
+---
+<section class="ctasection overlay">
+  <div class="ctacontainer">
+    <h2 class="ctatitle">{content.ctatitle}</h2>
+    <div class="ctabuttons">
+      <Button text="Video Gallery" link="/video" />
+      <Button text="Upcoming Performances" link="/performances" />
+      <Button text="Sacred Choir" link="/sacredchoir" />
+    </div>
+  </div>
+</section>
+
+<style define:vars={{ image: `url("${bkgdImg}")` }}>
+  .ctasection {
+    width: 100%;
+    background-image: var(--image);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  .overlay {
+    border-image-source: linear-gradient(var(--primary-overlay), var(--primary-overlay));
+    border-image-slice: fill 1;
+  }
+  .ctacontainer {
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 5em 50px 6em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .ctatitle {
+    margin-bottom: 2em;
+    text-align: center;
+  }
+  .ctabuttons {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 3em;
+  }
+</style>

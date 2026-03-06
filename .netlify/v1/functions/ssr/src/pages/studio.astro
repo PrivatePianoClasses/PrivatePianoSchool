@@ -1,0 +1,53 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { PortableText } from "astro-portabletext";
+import { urlFor } from "../utils/image";
+import { getStudio } from "../utils/sanity";
+
+const content = await getStudio();
+const headImg = urlFor(content.headerImage).url();
+const hotspot: any = content.headerImage.hotspot ? content.headerImage.hotspot : false;
+const center = hotspot ? (hotspot.y * 100) + '%' : '';
+---
+
+<Layout title="Studio Procedures & Pricing" headerimg={headImg} HIcenter={center}>
+  <section class="intro">
+    {content.introtext}
+  </section>
+  <section class="pricing">
+    <div class="pricediv price1"><PortableText value={content.pricing1} /></div>
+    <div class="pricediv price2"><PortableText value={content.pricing2} /></div>
+    <div class="pricediv price3"><PortableText value={content.pricing3} /></div>
+  </section>
+  <section class="procedures">
+    <PortableText value={content.procedures} />
+  </section>
+</Layout>
+
+<style>
+  .intro {
+    text-align: center;
+    margin-bottom: 2em;
+  }
+  .pricing {
+    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 3em 15%;
+  }
+  .pricingdiv {
+    width: 50%;
+  }
+  .procedures {
+    margin: 5em auto 15em;
+    max-width: 900px;
+  }
+</style>
+
+<style is:inline>
+  .procedures p {
+    margin-bottom: 1.5em;
+  }
+</style>

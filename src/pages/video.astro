@@ -1,0 +1,150 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Button from "../components/Button.astro";
+import { YouTube } from 'astro-embed';
+import { urlFor } from "../utils/image";
+import { getVideos } from "../utils/sanity";
+
+const content = await getVideos();
+const headImg = urlFor(content.headerImage).url();
+const hotspot:any = content.headerImage.hotspot ? content.headerImage.hotspot : false;
+const center = hotspot ? (hotspot.y * 100) + '%' : '';
+---
+
+<Layout title="Video Gallery" headerimg={headImg} HIcenter={center}>
+<!-- NAVIGATION -->
+<section class="buttonnav">
+    <div class="instruction"><p>Click any button to jump to video content.</p></div>
+    <Button text="Piano Performances" link="#piano" />
+    <Button text="Choir Performances" link="#choir" />
+    <Button text="Archived Performances" link="#archive-content" classname="archive-btn" />
+  </section>
+<!-- PIANO -->
+  <section id="piano" class="videocategory">
+    <h2 class="categorytitle">Piano Performances</h2>
+    {content.pianoperfs.map((section:any) =>
+    <div class="videosection">
+      <h3 class="sectiontitle">{section.title}</h3>
+      <h3 class="sectiondate">{section.date}</h3>
+      <div class="videos">
+        {section.videos.map((video:any) =>
+        <div class="video">
+          <YouTube id={video.url} />
+          <p class="videocaption">{video.caption}</p>
+        </div>
+        )}
+      </div>
+    </div>
+    )}
+  </section>
+<!-- CHOIR -->
+  <section id="choir" class="videocategory">
+    <h2 class="categorytitle">Choir Performances</h2>
+    {content.choirperfs.map((section:any) =>
+    <div class="videosection">
+      <h3 class="sectiontitle">{section.title}</h3>
+      <h3 class="sectiondate">{section.date}</h3>
+      <div class="videos">
+        {section.videos.map((video:any) =>
+        <div class="video">
+          <YouTube id={video.url} />
+          <p class="videocaption">{video.caption}</p>
+        </div>
+        )}
+      </div>
+    </div>
+    )}
+  </section>
+<!-- ARCHIVE -->
+  <section id="archive" class="videocategory">
+    <div class="show-archive"><Button text="Show Archived Performances" link="#!" classname="archive-btn" /></div>
+    <div id="archive-content">
+      <h2 class="categorytitle">Archived Performances</h2>
+      {content.archiveperfs ? content.archiveperfs.map((section:any) =>
+      <div class="videosection">
+        <h3 class="sectiontitle">{section.title}</h3>
+        <h3 class="sectiondate">{section.date}</h3>
+        <div class="videos">
+          {section.videos.map((video:any) =>
+          <div class="video">
+            <YouTube id={video.url} />
+            <p class="videocaption">{video.caption}</p>
+          </div>
+          )}
+        </div>
+      </div>
+      ) : <div class="videosection"><p>No Archived Performances</p></div>}
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .instruction {
+    text-align: center;
+    width: 100%;
+  }
+  .buttonnav, .show-archive {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 2em;
+    margin-bottom: 7em;
+  }
+  .videocategory {
+    margin-bottom: 10em;
+  }
+  .videocategory:last-of-type {
+    margin-bottom: 20em;
+  }
+  .videosection {
+    margin-bottom: 4em;
+    text-align: center;
+  }
+  .categorytitle {
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: 1em;
+  }
+  .sectiontitle {
+    font-size: 1.2em;
+    margin-bottom: 0;
+  }
+  .sectiondate {
+    margin-bottom: 1em;
+  }
+  .videos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 3em;
+  }
+  .video {
+    width: 20%;
+  }
+
+  @media (max-width: 800px) {
+    .video {
+      width: 100%;
+    }
+  }
+  #archive-content {
+    display: none;
+  }
+</style>
+
+<style is:inline>
+  lite-youtube {
+    border-radius: 10px;
+  }
+</style>
+
+<script>
+  const archiveBtns = document.querySelectorAll('.archive-btn');
+  const archiveSect:any = document.querySelector('#archive-content');
+
+  archiveBtns.forEach(btn => btn.addEventListener('click', () =>
+    archiveSect.style.display = "block"
+  ))
+</script>

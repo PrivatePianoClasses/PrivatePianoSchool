@@ -1,0 +1,64 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { PortableText } from "astro-portabletext";
+import { urlFor } from "../utils/image";
+import { getPerformances } from "../utils/sanity";
+
+const content = await getPerformances();
+const headImg = urlFor(content.headerImage).url();
+const hotspot: any = content.headerImage.hotspot ? content.headerImage.hotspot : false;
+const center = hotspot ? (hotspot.y * 100) + '%' : '';
+---
+
+<Layout title="Upcoming Performances" headerimg={headImg} HIcenter={center}>
+  <section class="performances">
+    <div class="image">
+      <img
+        class="roundedcorners firstimg"
+        src={urlFor(content.mainImage).url()}
+        alt="Miss Deborah's Piano Studio" />
+    </div>
+    <div class="content">
+      {content.listings.map((event : any) =>
+      <h2 class="eventtitle">{event.title}</h2>
+      <div class="eventdetails"><PortableText value={event.details} /></div>
+      )}
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .performances {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15em;
+    gap: 3em 0;
+  }
+  .image {
+    width: 40%;
+  }
+  .image img {
+    width: 100%;
+    height: auto;
+  }
+  .content {
+    width: 50%;
+  }
+  .eventtitle {
+    font-size: 1.2em;
+  }
+  .eventdetails {
+    margin-bottom: 1.5em;
+  }
+
+  @media (max-width: 800px) {
+    .image {
+      order: 2;
+    }
+    .image, .content {
+      width: 100%;
+    }
+  }
+</style>

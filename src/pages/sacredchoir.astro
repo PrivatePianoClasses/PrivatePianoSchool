@@ -1,0 +1,127 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { PortableText } from "astro-portabletext";
+import { urlFor } from "../utils/image";
+import { getSacred } from "../utils/sanity";
+
+const content = await getSacred();
+const headImg = urlFor(content.headerImage).url();
+const hotspot: any = content.headerImage.hotspot ? content.headerImage.hotspot : false;
+const center = hotspot ? (hotspot.y * 100) + '%' : '';
+---
+
+<Layout title="Sacred Choir" headerimg={headImg} HIcenter={center}>
+  <section class="sacred">
+    <div class="images">
+      {content.images.map((image: any) =>
+      <div class="image">
+        <img
+          class="roundedcorners"
+          src={urlFor(image).url()}
+          alt="Miss Deborah's Piano Studio" />
+        <p class="imagecaption">{image.caption}</p>
+      </div>
+      )}
+    </div>
+    <div class="content">
+      <p class="intro">{content.introtext}</p>
+      <div class="info">
+        <PortableText value={content.information} />
+      </div>
+      <div class="details">
+        <h2 class="detailstitle">{content.season}</h2>
+        <p class="detailitem">
+          <span class="detaillabel">Audition Timeframe: </span>
+          <span class="detailtext">{content.audition}</span>
+        </p>
+        <p class="detailitem">
+          <span class="detaillabel">Times: </span>
+          <span class="detailtext">{content.times}</span>
+        </p>
+        <p class="detailitem">{content.statement}</p>
+        <p class="detailitem">
+          <span class="detaillabel">Rehearsal Dates: </span>
+          <span class="detailtext">{content.rehearsal}</span>
+        </p>
+        <p class="detailitem">
+          <span class="detaillabel">Concert Dates: </span>
+          <span class="detailtext">{content.concert}</span>
+        </p>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .sacred {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15em;
+    gap: 3em 0;
+  }
+  .images {
+    width: 30%;
+  }
+  .image {
+    margin-bottom: 4em;
+  }
+  .image img {
+    width: 100%;
+    height: auto;
+  }
+  .imagecaption {
+    font-size: .8em;
+  }
+  .content {
+    width: 60%;
+  }
+  .intro {
+    font-size: 1.2em;
+    margin-bottom: 1.5em;
+  }
+  .details {
+    margin-top: 7em;
+  }
+  .detailstitle {
+    text-align: center;
+    margin-bottom: 1em;
+  }
+  .detailitem {
+    margin-bottom: 1.5em;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+  .detaillabel {
+    display: inline-block;
+    font-weight: bold;
+    min-width: 12em;
+  }
+
+  @media (max-width: 800px) {
+    .images {
+      order: 2;
+    }
+    .images, .content {
+      width: 100%;
+    }
+    .detailstitle {
+      text-align: left;
+    }
+    .detailitem {
+      flex-wrap: wrap;
+    }
+    .detaillabel {
+      width: 100%;
+      display: block;
+    }
+  }
+</style>
+
+<style is:inline>
+  .info p {
+    margin-bottom: 1.5em;
+  }
+</style>
